@@ -1,6 +1,6 @@
 {
   "name": "standalone-launcher",
-  "description": "Reactive Trader™ - Cloud edition. Example reactive currency pair trading app",
+  "description": "Standalone Launcher, laucher of reactive apps.",
   "keywords": [
     "react",
     "fx",
