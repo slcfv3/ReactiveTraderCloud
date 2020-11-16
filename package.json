@@ -23,5 +23,11 @@
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "recharts": "^1.8.5",
+    "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "reselect": "^4.0.0"
   }
 }
