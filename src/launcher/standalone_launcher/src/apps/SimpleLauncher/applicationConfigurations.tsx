@@ -104,7 +104,7 @@ const env = getEnvironment()
 const envSuffix = env === 'demo' ? '' : ` (${env.toUpperCase()})`
 
 const reactiveTraderBaseUrl =
-  process.env.REACT_APP_TRADER_URL ?? `https://${env}-reactive-trader.adaptivecluster.com/`
+  process.env.REACT_APP_TRADER_URL ?? `https://web-demo.adaptivecluster.com/`
 const reactiveTraderManifestUrl = new URL(
   '/openfin/app.json',
   reactiveTraderBaseUrl
