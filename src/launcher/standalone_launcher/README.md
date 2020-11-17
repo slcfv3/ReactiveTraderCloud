@@ -1,22 +1,6 @@
-# Reactive Trader Client
+# Reactive Trader Launcher
 
-The trading client GUI is a single page app (SPA) built using Typescript, React, Redux and Styled components. It can run as a desktop application using Openfin/Finsemble/Glue42, in the browser, or on mobile as a PWA.
-
-[High Level Technologies](#high-level-technologies)  
-[DEV Machine Setup](#dev-machine-setup)  
-[Running the client locally](#running-the-client-locally)  
-[Openfin](#openfin)  
-[Progressive Web App](#progressive-web-app)  
-[Token replacement](#token-replacement)  
-
-## High level technologies
-
-- HTML5, Typescript, Redux and React
-- Tests use [Jest](https://jestjs.io/)
-- Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
-- GUI state management is done with [redux](https://redux.js.org/).
-- Connectivity to the backend is done via [RxStomp](https://github.com/stomp-js/rx-stomp).
-- Styles build using [Styled Components](https://www.styled-components.com/).
+This is a standalone launcher to launch different apps such as Reactive Trader and Reactive Analytics.
 
 ## DEV Machine Setup
 
@@ -34,12 +18,12 @@ You might want to [increase the limit](http://stackoverflow.com/questions/167487
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
 
-## Running the client locally
+## Running the app locally
 
 Clone the repo and install the necessary node modules:
 
 ```sh
-cd /src/client/
+cd /src/launcher/
 npm install  # Install Node modules listed in ./package.json
 npm start    # Compile and launch the webpack dev server. By default, the client connects to the dev environment.
 ```
@@ -47,22 +31,6 @@ npm start    # Compile and launch the webpack dev server. By default, the client
 You can then browse the app at [http://localhost:3000](http://localhost:3000)
 
 ### Additional command line options
-
-Run the client with pointing to your local backend server:
-
-```sh
-npm run start:local-backend
-```
-
-Run the client with a back end on the cloud:
-
-```sh
-npm run start:dev-backend
-
-# or
-
-npm run start:demo-backend
-```
 
 Runs unit tests with Jest.
 
