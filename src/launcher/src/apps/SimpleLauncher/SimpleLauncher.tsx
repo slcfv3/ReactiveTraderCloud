@@ -5,7 +5,7 @@ import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
 import { WsConnection, ServiceClient } from 'rt-system'
 import { themes } from 'rt-theme'
-import { BlotterService, TradesUpdate, PricingService } from 'apps/SimpleLauncher/MainRoute'
+import { BlotterService, TradesUpdate, PricingService } from './services'
 import { Launcher } from './Launcher'
 import {
   createServiceStub,
@@ -15,7 +15,7 @@ import {
 } from './spotlight'
 
 import { ReferenceDataProvider } from './spotlight/context'
-import { referenceDataService } from 'apps/SimpleLauncher/MainRoute/data/referenceData/referenceDataService'
+import { referenceDataService } from './services'
 import { getAppName } from 'rt-util'
 import Helmet from 'react-helmet'
 

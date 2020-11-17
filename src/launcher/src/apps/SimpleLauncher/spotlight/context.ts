@@ -1,7 +1,8 @@
 import React from 'react'
 import { Observable } from 'rxjs'
 import { ServiceClient } from 'rt-system'
-import { PricingService, TradesUpdate } from 'apps/SimpleLauncher/MainRoute'
+import { PricingService } from '../services/pricingService'
+import { TradesUpdate } from '../services/blotterTypes'
 
 export const ServiceStubContext = React.createContext<ServiceClient | undefined>(undefined)
 export const { Provider: ServiceStubProvider } = ServiceStubContext
