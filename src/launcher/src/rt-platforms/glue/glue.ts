@@ -6,7 +6,6 @@ import { Platform } from '../platform'
 import { openGlueWindow, registerWindowMethods } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import DefaultRoute from 'rt-platforms/defaultRoute'
-import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink } from './'
 
 /**
@@ -78,7 +77,6 @@ export class Glue42 implements Platform {
     },
   }
 
-  epics: Array<ApplicationEpic> = []
 
   PlatformHeader: React.FC<any> = () => null
 

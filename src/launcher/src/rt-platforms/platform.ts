@@ -1,5 +1,4 @@
 import { AppConfig, PlatformType } from './types'
-import { ApplicationEpic } from 'StoreTypes'
 import { Observable } from 'rxjs'
 import { PlatformWindow, PlatformWindowApi } from './platformWindow'
 
@@ -36,15 +35,12 @@ export type Platform = Partial<PlatformFeatures> & {
     [key: string]: string | number
   }
 
-  readonly epics: Array<ApplicationEpic>
+  //readonly epics: Array<ApplicationEpic>
 
   readonly Logo: React.FC
 
-  readonly PlatformHeader: React.FC<any>
-
   readonly PlatformControls: React.FC<any>
 
-  readonly PlatformFooter: React.FC<any>
 
   readonly PlatformRoute: React.FC<{ title?: string }>
 }

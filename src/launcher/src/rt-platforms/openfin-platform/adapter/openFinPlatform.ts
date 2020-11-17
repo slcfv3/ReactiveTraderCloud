@@ -14,7 +14,7 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { OpenFinControls, OpenFinHeader, OpenFinFooter, OpenFinLogo } from '../components'
+import { OpenFinControls, OpenFinLogo } from '../components'
 
 export default class OpenFinPlatform implements Platform {
   readonly name = 'openfin-platform'
@@ -116,13 +116,10 @@ export default class OpenFinPlatform implements Platform {
 
   Logo: React.FC = OpenFinLogo
 
-  PlatformHeader: React.FC<any> = OpenFinHeader
-
   PlatformControls: React.FC<any> = OpenFinControls
 
   PlatformRoute: React.FC<any> = OpenFinRoute
 
-  PlatformFooter: React.FC<any> = OpenFinFooter
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'

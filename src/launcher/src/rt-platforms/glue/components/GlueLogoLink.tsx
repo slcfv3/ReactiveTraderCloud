@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../../../apps/SimpleLauncher/MainRoute/components/app-header/Logo'
+import Logo from './Logo'
 
 const onLogoClick = () =>
   window.glue.windows.open('adaptiveName', 'https://weareadaptive.com/', {

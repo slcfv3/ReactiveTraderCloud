@@ -3,7 +3,6 @@ import { fromEventPattern, merge } from 'rxjs'
 import { map, switchMapTo, mergeMap, delay } from 'rxjs/operators'
 import { ActionsObservable, ofType } from 'redux-observable'
 import flowRight from 'lodash/flowRight'
-import { ApplicationEpic } from 'StoreTypes'
 import {
   SetupAction,
   SETUP_ACTION_TYPES,
@@ -93,10 +92,3 @@ const workspaceWindowsEpic = (action$: ActionsObservable<Action>) =>
     map(WorkspaceActions.save)
   )
 
-export const platformEpics: Array<ApplicationEpic> = [
-  initWorkspaceEpic,
-  restoreWorkspaceEpic,
-  saveWorkspaceEpic,
-  workspaceHandlersEpic,
-  workspaceWindowsEpic
-]

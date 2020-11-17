@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components/macro'
-import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
+import { OpenFinChrome } from './OpenFinChrome'
 import { getAppName } from 'rt-util'
 
 const OpenFinFrameRoot = styled.div`
@@ -98,13 +98,11 @@ export const OpenFinWindowFrame: React.FC = () => {
     `}</style>
       </Helmet>
       <OpenFinChrome>
-        <OpenFinHeader {...headerControlHandlers} title={getAppName()} />
 
         <LayoutRoot>
           {/* This div and id is required by Openfin */}
           <div id="layout-container"></div>
         </LayoutRoot>
-        <OpenFinFooter />
       </OpenFinChrome>
     </OpenFinFrameRoot>
   )

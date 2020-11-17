@@ -6,7 +6,7 @@ import React from 'react'
 import { Story } from 'rt-storybook'
 
 import styled from 'styled-components/macro'
-import { OpenFinChrome, OpenFinControls, OpenFinHeader } from './OpenFinChrome'
+import { OpenFinChrome, OpenFinControls } from './OpenFinChrome'
 
 const stories = storiesOf('Openfin', module)
 const close = action('onCLose')
@@ -17,7 +17,6 @@ stories.add('Openfin chrome', () => (
   <Story>
     <Container>
       <OpenFinChrome>
-        <OpenFinHeader close={close} minimize={minimize} maximize={maximize} />
         <Body>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor

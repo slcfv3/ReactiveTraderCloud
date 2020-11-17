@@ -14,10 +14,8 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader } from '../components'
-import { ApplicationEpic } from 'StoreTypes'
 
 export default class OpenFin implements Platform {
   readonly name = 'openfin'
@@ -145,5 +143,4 @@ export default class OpenFin implements Platform {
     window.removeEventListener('beforeunload', this.handleWindowUnload)
   }
 
-  epics: Array<ApplicationEpic> = platformEpics
 }

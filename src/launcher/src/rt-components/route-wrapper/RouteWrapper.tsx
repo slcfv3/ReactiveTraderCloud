@@ -31,7 +31,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const platform = usePlatform()
   const theme = useTheme()
 
-  const { PlatformFooter, PlatformControls, PlatformRoute, window } = platform
+  const { PlatformControls, PlatformRoute, window } = platform
 
   useEffect(() => {
     const head = document.getElementById('themeColor')
@@ -43,14 +43,12 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   }, [theme])
 
   const Header = windowType === 'main' ? PlatformControls : null
-  const Footer = windowType === 'main' ? PlatformFooter : null
 
   return (
     <RouteStyle platform={platform}>
       <PlatformRoute title={title}>
         {React.cloneElement(children as React.ReactElement, {
           header: Header ? <Header {...window} /> : null,
-          footer: Footer ? <Footer /> : null,
         })}
       </PlatformRoute>
     </RouteStyle>

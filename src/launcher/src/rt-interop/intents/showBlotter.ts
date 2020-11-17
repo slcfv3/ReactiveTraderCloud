@@ -1,7 +1,7 @@
 import { InteropTopics, Platform, platformHasFeature, PlatformWindow } from 'rt-platforms'
 import { stringify } from 'query-string'
 import { defaultConfig } from './defaultWindowConfig'
-import { BlotterFilters, validateFilters } from 'apps/SimpleLauncher/MainRoute/widgets/blotter/blotterTradesFilter'
+import { BlotterFilters, validateFilters } from 'apps/SimpleLauncher/services'
 
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {

@@ -5,7 +5,7 @@ import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './int
 import { showCurrencyPair } from './showCurrencyPair'
 import { showMarket } from './showMarket'
 import { showBlotter } from './showBlotter'
-import { BlotterFilters } from 'apps/SimpleLauncher/MainRoute/widgets/blotter'
+import { BlotterFilters } from 'apps/SimpleLauncher/services'
 
 export const handleIntent = (response: DetectIntentResponse, platform: Platform) => {
   const queryResult = response.queryResult

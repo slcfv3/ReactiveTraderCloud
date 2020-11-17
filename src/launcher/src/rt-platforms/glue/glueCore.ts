@@ -3,7 +3,6 @@ import GlueWeb from '@glue42/web'
 import { WindowConfig } from '../types'
 import { Platform } from '../platform'
 import { registerWindowMethods } from './window'
-import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader } from './'
 import DefaultRoute from 'rt-platforms/defaultRoute'
 import Logo from '../logo'
@@ -63,7 +62,6 @@ export class Glue42Core implements Platform {
     notify: () => null,
   }
 
-  epics: Array<ApplicationEpic> = []
 
   PlatformHeader: React.FC<any> = () => null
 
