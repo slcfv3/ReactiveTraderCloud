@@ -197,11 +197,6 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   }
 `
 
-const FooterControl = styled.div`
-  margin-right: 0.5rem;
-  display: flex;
-`
-
 export const OpenFinSubWindowHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
   <SubWindowHeader>
     <OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>

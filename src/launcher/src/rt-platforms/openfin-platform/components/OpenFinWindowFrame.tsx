@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components/macro'
 import { OpenFinChrome } from './OpenFinChrome'
-import { getAppName } from 'rt-util'
 
 const OpenFinFrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -66,14 +65,7 @@ const LayoutRoot = styled.div`
 `
 
 export const OpenFinWindowFrame: React.FC = () => {
-  const win = fin.Window.getCurrentSync()
-  const headerControlHandlers = {
-    close: () => win.close(),
-    minimize: () => win.minimize(),
-    maximize: () =>
-      win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize())),
-  }
-
+  
   useEffect(() => {
     window.document.dispatchEvent(
       new Event('DOMContentLoaded', {
