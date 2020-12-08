@@ -1,7 +1,7 @@
-import { Subscribe } from "@react-rxjs/core"
-import { Loader } from "components/Loader"
-import styled from "styled-components/macro"
-import { Analytics as AnalyticsBase, analytics$ } from "./Analytics"
+import { Subscribe } from '@react-rxjs/core'
+import { Loader } from 'components/Loader'
+import styled from 'styled-components/macro'
+import { Analytics as AnalyticsBase, analytics$ } from './Analytics'
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;

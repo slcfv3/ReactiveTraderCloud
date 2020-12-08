@@ -9,7 +9,12 @@ interface CurrencyPairPositionRaw {
   BaseTradedAmount: number
   CounterTradedAmount: number
 }
-export type CurrencyPairPosition = CamelCase<CurrencyPairPositionRaw>
+
+export interface CurrencyPairPosition
+  extends CamelCase<CurrencyPairPositionRaw> {
+  basePnlName: "basePnl"
+  baseTradedAmountName: "baseTradedAmount"
+}
 
 interface HistoryRaw {
   Timestamp: string
@@ -53,6 +58,8 @@ export const [useCurrentPositions, currentPositions$] = bind<
           basePnl: BasePnl,
           baseTradedAmount: BaseTradedAmount,
           counterTradedAmount: CounterTradedAmount,
+          basePnlName: "basePnl",
+          baseTradedAmountName: "baseTradedAmount",
         }),
       ),
     ),
