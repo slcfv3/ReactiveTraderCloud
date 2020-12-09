@@ -1,3 +1,5 @@
+export {}
+/*
 import { select, layout, Selection, event as d3Event } from "d3"
 import { Component, createRef } from "react"
 import { colors } from "theme"
@@ -293,5 +295,5 @@ export class PositionsBubbleChart extends Component<
     return <div ref={this.chartDivRef} />
   }
 }
-
+*/
 // export default reactSizeme({ monitorHeight: true })(PositionsBubbleChart)

@@ -32,7 +32,7 @@ interface PositionsRaw {
 
 const analytics$ = getStream$<PositionsRaw, string>(
   "analytics",
-  "getAnalitics",
+  "getAnalytics",
   "USD",
 ).pipe(shareLatest())
 
