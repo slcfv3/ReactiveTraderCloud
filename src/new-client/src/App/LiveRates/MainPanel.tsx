@@ -5,8 +5,7 @@ import styled from 'styled-components/macro'
 import { TileSwitch } from './TileSwitch'
 import { MainHeader } from './MainHeader'
 import { useLocalStorage } from './util'
-import { useFilteredSymbols } from 'services/currencyPairs'
-import { tilesSubscription$ } from 'services/tiles'
+import { filteredSymbols$,useFilteredSymbols } from 'services/currencyPairs'
 import { ExternalWindowProps, TileView } from './types'
 
 const PanelItems = styled.div`
@@ -20,19 +19,24 @@ const PanelItem = styled.div`
   flex-basis: 20rem;
 `
 
-interface SpotTile {
-  key: string
-  externalWindowProps: ExternalWindowProps
-  tornOff: boolean
-}
-
 const ALL = 'ALL'
 
+const FilteredSymbols = () => {
+  return (
+    <>
+      {
+        useFilteredSymbols().map((symbol) => (
+          <PanelItem>
+            <TileSwitch id={symbol} key={symbol}/>
+          </PanelItem>
+        ))
+      }
+    </>
+  )
+}
 export const MainPanel: React.FC = () => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
- 
-
   const currencyOptions = ['USD', 'GBP']
   return (
     <div data-qa="workspace__tiles-workspace">
@@ -43,13 +47,8 @@ export const MainPanel: React.FC = () => {
         tileView={tileView as TileView}
       />
       <PanelItems data-qa="workspace__tiles-workspace-items">
-      <Subscribe source$={tilesSubscription$}>
-      {useFilteredSymbols().map((symbol) => (
-        <PanelItem>
-        <TileSwitch id={symbol} key={symbol}/>
-      </PanelItem>
-      ))}
-
+      <Subscribe source$={filteredSymbols$}>
+        <FilteredSymbols />    
       </Subscribe>
       </PanelItems>
     </div>

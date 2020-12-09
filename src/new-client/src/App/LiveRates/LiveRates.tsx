@@ -1,13 +1,15 @@
+import { Subscribe } from '@react-rxjs/core'
 import styled from 'styled-components/macro'
-import { Loader } from 'components/Loader'
+import { Loader } from "components/Loader"
 import { MainPanel } from './MainPanel'
+import { filteredSymbols$ } from 'services/currencyPairs'
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
   user-select: none;
 `
 
-const WorkspaceWrapper = styled(Wrapper)`
+const LiveRateWrapper = styled(Wrapper)`
   padding-right: 0;
   height: 100%;
 
@@ -23,9 +25,11 @@ export const OverflowScroll = styled.div`
 `
 
 export const LiveRates: React.FC = () => (
-  <WorkspaceWrapper>
-    <OverflowScroll>
-      <MainPanel/>
-    </OverflowScroll>
-  </WorkspaceWrapper>
+  <LiveRateWrapper>
+    
+      <OverflowScroll>
+        <MainPanel/>
+      </OverflowScroll>
+    
+  </LiveRateWrapper>
 )
