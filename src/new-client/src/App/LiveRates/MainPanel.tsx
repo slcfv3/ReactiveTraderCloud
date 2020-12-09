@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { bind } from '@react-rxjs/core'
+import { bind, Subscribe } from '@react-rxjs/core'
+import { startWith } from 'rxjs/operators'
 import styled from 'styled-components/macro'
 import { TileSwitch } from './TileSwitch'
 import { MainHeader } from './MainHeader'
 import { useLocalStorage } from './util'
-import { tilesSubscription$ } from '../../services/tiles'
+import { useFilteredSymbols } from 'services/currencyPairs'
+import { tilesSubscription$ } from 'services/tiles'
 import { ExternalWindowProps, TileView } from './types'
 
 const PanelItems = styled.div`
@@ -25,26 +27,12 @@ interface SpotTile {
 }
 
 const ALL = 'ALL'
-const [useTilesSubscription] = bind(tilesSubscription$)
 
 export const MainPanel: React.FC = () => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
-  //const spotTiles = useTilesSubscription()
-  const spotTiles = [{
-    key: '1a',
-    externalWindowProps: 'SSL_OP_ALL',
-    tornOff: false
-  },
-  {
-    key: '1b',
-    externalWindowProps: 'SSL_OP_ALL',
-    tornOff: false
-  },{
-    key: '1c',
-    externalWindowProps: 'SSL_OP_ALL',
-    tornOff: false
-  }]
+ 
+
   const currencyOptions = ['USD', 'GBP']
   return (
     <div data-qa="workspace__tiles-workspace">
@@ -55,13 +43,14 @@ export const MainPanel: React.FC = () => {
         tileView={tileView as TileView}
       />
       <PanelItems data-qa="workspace__tiles-workspace-items">
-      {spotTiles
-          .filter(({ key }) => key.includes(currency) || currency === ALL)
-          .map(({ key, externalWindowProps, tornOff }) => (
-            <PanelItem>
-                <TileSwitch id={key}/>
-            </PanelItem>
-          ))}
+      <Subscribe source$={tilesSubscription$}>
+      {useFilteredSymbols().map((symbol) => (
+        <PanelItem>
+        <TileSwitch id={symbol} key={symbol}/>
+      </PanelItem>
+      ))}
+
+      </Subscribe>
       </PanelItems>
     </div>
   )

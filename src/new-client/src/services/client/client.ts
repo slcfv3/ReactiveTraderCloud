@@ -1,5 +1,5 @@
 import { combineLatest, Observable } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 import { currentUser$ } from "../currentUser";
 import { endpoints$ } from "./endpoints";
 
@@ -38,5 +38,6 @@ export const getStream$ = <TResponse, TPayload = {}>(
         body: JSON.stringify({ payload, Username: code }),
       })
     ),
+    tap((item) => console.log('getStream called')),
     map((message) => JSON.parse(message.body))
   );
