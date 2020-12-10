@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const TileSwitch: React.FC<Props> = ({ id }) => {
-  const isAnalytics = true
+  const isAnalytics = false
 
   return <>{isAnalytics ? <AnalyticsTile id={id} /> : <SpotTile id={id} />}</>
 }

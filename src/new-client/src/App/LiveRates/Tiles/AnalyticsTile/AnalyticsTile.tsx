@@ -20,13 +20,11 @@ interface Props {
 }
 //const [useCurrencyPairs] = bind(currencyPairs$)
 export const AnalyticsTile: React.FC<Props> = ({ id }) => {
-  const localZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone
-  //const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
   const currencyPairs = useCurrencyPairs()
   const currencyPair = currencyPairs[id]
   const priceData = usePrice(id)
-  const spotDate = "04DEC" //format(new Date(priceData.valueDate), 'ddMMM')//dateFomatter(priceData.valueDate, false, localZoneName)
-  const date = spotDate && `SPT (${spotDate})`
+  const spotDate = priceData.valueDate ? format(new Date(priceData.valueDate), 'ddMMM'): ''
+  const date = spotDate && `SPT (${spotDate.toUpperCase()})`
   const isTimerOn = false
   const historicPrices = [
     {
