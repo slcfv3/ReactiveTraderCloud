@@ -13,23 +13,20 @@ import {
 } from './styled'
 import { useCurrencyPairs } from 'services/currencyPairs'
 import { usePrice } from 'services/tiles'
+import { format } from 'date-fns'
 
 interface Props{
   id: string
 }
 //const [useCurrencyPairs] = bind(currencyPairs$)
 export const AnalyticsTile: React.FC<Props> = ({id}) => {
-  /*const currencyPair = {
-    symbol: 'USD/JPY',
-    ratePrecision: 0,
-    pipsPosition: 2,
-    base: 'USD',
-    terms: 'JPY'
-  }*/
+  const localZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone
+  //const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
   const currencyPairs = useCurrencyPairs()
   const currencyPair = currencyPairs[id]
   const priceData = usePrice(id)
-  const date = '12-07-2020'
+  const spotDate = '04DEC'//format(new Date(priceData.valueDate), 'ddMMM')//dateFomatter(priceData.valueDate, false, localZoneName)
+  const date = spotDate && `SPT (${spotDate})`
   const isTimerOn = false
   const historicPrices = [{
     ask: 0,
