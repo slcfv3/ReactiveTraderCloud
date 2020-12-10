@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
-import { bind, Subscribe } from '@react-rxjs/core'
-import { startWith } from 'rxjs/operators'
+import React from 'react'
+import { merge } from 'rxjs'
+import { Subscribe } from '@react-rxjs/core'
 import styled from 'styled-components/macro'
 import { TileSwitch } from './TileSwitch'
 import { MainHeader } from './MainHeader'
 import { useLocalStorage } from './util'
-import { filteredSymbols$,useFilteredSymbols } from 'services/currencyPairs'
-import { ExternalWindowProps, TileView } from './types'
+import { filteredSymbols$,
+         useFilteredSymbols, 
+         currencies$,
+         currencyPairs$ } from 'services/currencyPairs'
+import { TileView } from './types'
+import { Loader } from 'components/Loader'
 
 const PanelItems = styled.div`
   display: grid;
@@ -19,13 +23,13 @@ const PanelItem = styled.div`
   flex-basis: 20rem;
 `
 
-const ALL = 'ALL'
-
-const FilteredSymbols = () => {
+const LiveRates$ = merge(filteredSymbols$, currencies$, currencyPairs$)
+const FilteredTiles = () => {
+  const spotTiles = useFilteredSymbols()
   return (
     <>
       {
-        useFilteredSymbols().map((symbol) => (
+        spotTiles.map((symbol) => (
           <PanelItem>
             <TileSwitch id={symbol} key={symbol}/>
           </PanelItem>
@@ -34,23 +38,23 @@ const FilteredSymbols = () => {
     </>
   )
 }
+
 export const MainPanel: React.FC = () => {
-  const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
-  const currencyOptions = ['USD', 'GBP']
+  
   return (
     <div data-qa="workspace__tiles-workspace">
-      <MainHeader
-        currencyOptions={currencyOptions}
-        currency={currency}
-        defaultOption={ALL}
-        tileView={tileView as TileView}
-      />
-      <PanelItems data-qa="workspace__tiles-workspace-items">
-      <Subscribe source$={filteredSymbols$}>
-        <FilteredSymbols />    
+      <Subscribe source$={LiveRates$}
+                fallback={<Loader minWidth="22rem" minHeight="22rem" />}
+      >
+        <MainHeader
+          tileView={tileView as TileView}
+        />
+      
+        <PanelItems data-qa="workspace__tiles-workspace-items">
+          <FilteredTiles/>
+        </PanelItems>
       </Subscribe>
-      </PanelItems>
     </div>
   )
 }

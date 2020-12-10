@@ -1,6 +1,6 @@
 import React from 'react'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
-import { CurrencyPair } from '../types'
+import { CurrencyPair } from 'services/currencyPairs'
 
 interface Props {
   ccyPair: CurrencyPair

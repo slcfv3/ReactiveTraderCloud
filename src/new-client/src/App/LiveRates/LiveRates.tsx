@@ -1,8 +1,5 @@
-import { Subscribe } from '@react-rxjs/core'
 import styled from 'styled-components/macro'
-import { Loader } from "components/Loader"
 import { MainPanel } from './MainPanel'
-import { filteredSymbols$ } from 'services/currencyPairs'
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
@@ -26,10 +23,8 @@ export const OverflowScroll = styled.div`
 
 export const LiveRates: React.FC = () => (
   <LiveRateWrapper>
-    
       <OverflowScroll>
         <MainPanel/>
       </OverflowScroll>
-    
   </LiveRateWrapper>
 )

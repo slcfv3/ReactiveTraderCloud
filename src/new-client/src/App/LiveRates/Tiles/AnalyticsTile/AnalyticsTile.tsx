@@ -11,16 +11,22 @@ import {
   PriceControlWrapper,
   AnalyticsTileWrapper
 } from './styled'
+import { useCurrencyPairs } from 'services/currencyPairs'
 
-
-export const AnalyticsTile: React.FC = () => {
-  const currencyPair = {
+interface Props{
+  id: string
+}
+//const [useCurrencyPairs] = bind(currencyPairs$)
+export const AnalyticsTile: React.FC<Props> = ({id}) => {
+  /*const currencyPair = {
     symbol: 'USD/JPY',
     ratePrecision: 0,
     pipsPosition: 2,
     base: 'USD',
     terms: 'JPY'
-  }
+  }*/
+  const currencyPairs = useCurrencyPairs()
+  const currencyPair = currencyPairs[id]
   const date = '12-07-2020'
   const isTimerOn = false
   const historicPrices = [{

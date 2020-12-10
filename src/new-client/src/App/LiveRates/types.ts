@@ -1,5 +1,5 @@
 import { Direction } from 'services/trades'
-
+import { CurrencyPair } from 'services/currencyPairs'
 export interface RfqRequest {
     notional: number
     currencyPair: CurrencyPair
@@ -76,14 +76,6 @@ export interface ExternalWindowProps {
 export interface TradingMode {
     symbol: CurrencyPair['symbol']
     mode: 'esp' | 'rfq'
-}
-
-export interface CurrencyPair {
-    symbol: string
-    ratePrecision: number
-    pipsPosition: number
-    base: string
-    terms: string
 }
 
 export interface RfqActions {
