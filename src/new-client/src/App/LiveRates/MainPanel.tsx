@@ -9,6 +9,7 @@ import { filteredSymbols$,
          useFilteredSymbols, 
          currencies$,
          currencyPairs$ } from 'services/currencyPairs'
+import { tilesSubscription$ } from 'services/tiles'
 import { TileView } from './types'
 import { Loader } from 'components/Loader'
 
@@ -23,7 +24,7 @@ const PanelItem = styled.div`
   flex-basis: 20rem;
 `
 
-const LiveRates$ = merge(filteredSymbols$, currencies$, currencyPairs$)
+const LiveRates$ = merge(filteredSymbols$, currencies$, currencyPairs$, tilesSubscription$)
 const FilteredTiles = () => {
   const spotTiles = useFilteredSymbols()
   return (

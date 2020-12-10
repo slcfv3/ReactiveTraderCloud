@@ -8,19 +8,20 @@ import {
   SpotTileStyle,
   ReserveSpaceGrouping,
 } from './styled'
+import { useCurrencyPairs } from 'services/currencyPairs'
+import { usePrice } from 'services/tiles'
 
+interface Props{
+  id: string
+}
 
-export const SpotTile: React.FC = () => {
+export const SpotTile: React.FC<Props> = ({id}) => {
   const handleRfqRejected = () => {
     
   }
-  const currencyPair = {
-    symbol: 'USD/JPY',
-    ratePrecision: 0,
-    pipsPosition: 2,
-    base: 'USD',
-    terms: 'JPY'
-  }
+  const currencyPairs = useCurrencyPairs()
+  const currencyPair = currencyPairs[id]
+  const priceData = usePrice(id)
 
   const notional = 100000
 
@@ -40,7 +41,9 @@ export const SpotTile: React.FC = () => {
             ccyPair={currencyPair}
             date={date}
           />
-          <PriceControls/>
+          <PriceControls
+            currencyPair={currencyPair}
+            priceData={priceData}/>
         </ReserveSpaceGrouping>
         <ReserveSpaceGrouping>
           <NotionalInputWrapper>

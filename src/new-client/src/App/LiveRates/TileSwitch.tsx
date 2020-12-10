@@ -12,7 +12,7 @@ export const TileSwitch: React.FC<Props> = ({id}) => {
 
   return (
     <>
-    {isAnalytics? <AnalyticsTile id={id}/> : <SpotTile/>}
+    {isAnalytics? <AnalyticsTile id={id}/> : <SpotTile id={id}/>}
     </>
   )
 }

@@ -8,7 +8,13 @@ import {
   PriceButtonDisabledPlaceholder,
   Icon
 } from './styled'
+import { CurrencyPair } from 'services/currencyPairs'
+import { Price } from 'services/tiles'
 
+interface Props{
+  currencyPair: CurrencyPair;
+  priceData: Price;
+}
 const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
   <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
     <Icon className="fas fa-ban fa-flip-horizontal" />
@@ -16,7 +22,7 @@ const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
   </PriceButtonDisabledPlaceholder>
 )
 
-export const PriceControls: React.FC = () => {
+export const PriceControls: React.FC<Props> = ({currencyPair, priceData}) => {
   
   const isAnalyticsView = true
   const priceStale = false
@@ -26,8 +32,8 @@ export const PriceControls: React.FC = () => {
   const priceMovement = 'Up'
   const spreadValue = '3'
   const showPriceMovement = true
-  const bidRate = toRate(0, 0, 0)
-  const askRate = toRate(0, 0, 0)
+  const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
+  const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
 
   const showPriceButton = (
     btnDirection: Direction,
@@ -62,13 +68,13 @@ export const PriceControls: React.FC = () => {
         isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
       <div>
-        {showPriceButton(Direction.Sell, 0, bidRate)}
-        {showPriceButton(Direction.Buy, 0, askRate)}
+        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       </div>
     </PriceControlsStyle>
   ) : (
     <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
-      {showPriceButton(Direction.Sell, 0, bidRate)}
+      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       
       <PriceMovement
         priceMovementType={priceMovement}
@@ -78,7 +84,7 @@ export const PriceControls: React.FC = () => {
         isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
       
-      {showPriceButton(Direction.Buy, 0, askRate)}
+      {showPriceButton(Direction.Buy, priceData.ask, askRate)}
      
     </PriceControlsStyle>
   )

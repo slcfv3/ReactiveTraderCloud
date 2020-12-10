@@ -12,6 +12,7 @@ import {
   AnalyticsTileWrapper
 } from './styled'
 import { useCurrencyPairs } from 'services/currencyPairs'
+import { usePrice } from 'services/tiles'
 
 interface Props{
   id: string
@@ -27,6 +28,7 @@ export const AnalyticsTile: React.FC<Props> = ({id}) => {
   }*/
   const currencyPairs = useCurrencyPairs()
   const currencyPair = currencyPairs[id]
+  const priceData = usePrice(id)
   const date = '12-07-2020'
   const isTimerOn = false
   const historicPrices = [{
@@ -66,7 +68,9 @@ export const AnalyticsTile: React.FC<Props> = ({id}) => {
             
             </GraphNotionalWrapper>
             <PriceControlWrapper>
-            <PriceControls/>
+              <PriceControls
+                currencyPair={currencyPair}
+                priceData={priceData}/>
             </PriceControlWrapper>
         </AnalyticsTileContent>
       </AnalyticsTileStyle>
