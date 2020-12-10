@@ -12,7 +12,7 @@ import {
   AnalyticsTileWrapper,
 } from "./styled"
 import { useCurrencyPairs } from "services/currencyPairs"
-import { usePrice } from "services/tiles"
+import { usePrice, useHistoricalPrices } from "services/tiles"
 import { format } from "date-fns"
 
 interface Props {
@@ -26,7 +26,7 @@ export const AnalyticsTile: React.FC<Props> = ({ id }) => {
   const spotDate = priceData.valueDate ? format(new Date(priceData.valueDate), 'ddMMM'): ''
   const date = spotDate && `SPT (${spotDate.toUpperCase()})`
   const isTimerOn = false
-  const historicPrices = [
+  /*const historicPrices = [
     {
       ask: 0,
       bid: 0,
@@ -37,7 +37,8 @@ export const AnalyticsTile: React.FC<Props> = ({ id }) => {
       priceMovementType: undefined,
       priceStale: false,
     },
-  ]
+  ]*/
+  const historicPrices = useHistoricalPrices(id)
   const notional = 100000
   return (
     <AnalyticsTileWrapper shouldMoveDate={false}>

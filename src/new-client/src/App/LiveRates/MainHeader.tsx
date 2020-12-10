@@ -6,22 +6,22 @@ import {
   NavItem,
   RightNav
 } from "./styled"
-import { TileView } from "./types"
+import { useSelectedTileView, onSelectTileView } from "services/tiles"
 import {
   useSelectedCurrency,
   useCurrencies,
   onSelectCurrency,
   ALL_CURRENCIES
 } from "services/currencyPairs"
-interface Props {
-  tileView: TileView
-}
+import { ToggleView } from './Tiles/ToggleView/ToggleView'
 
-export const MainHeader: React.FC<Props> = ({ tileView }) => {
+
+export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
   const defaultOption: typeof ALL_CURRENCIES = ALL_CURRENCIES
   const currency = useSelectedCurrency()
   const options: (string|typeof ALL_CURRENCIES)[]= [defaultOption, ...currencies]
+  const tileView = useSelectedTileView()
 
   return (
     <Header>
@@ -39,7 +39,11 @@ export const MainHeader: React.FC<Props> = ({ tileView }) => {
           </NavItem>
         ))}
       </LeftNav>
-      
+      <RightNav>
+        
+        <ToggleView tileView={tileView} onTileViewChange={onSelectTileView} />
+        
+      </RightNav>
     </Header>
   )
 }

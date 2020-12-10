@@ -1,13 +1,13 @@
 import React from "react"
 import { AnalyticsTile } from "./Tiles/AnalyticsTile/AnalyticsTile"
 import { SpotTile } from "./Tiles/SpotTile/SpotTile"
-
+import { TileView, useSelectedTileView } from 'services/tiles'
 interface Props {
   id: string
 }
 
 export const TileSwitch: React.FC<Props> = ({ id }) => {
-  const isAnalytics = false
+  const tileView = useSelectedTileView()
 
-  return <>{isAnalytics ? <AnalyticsTile id={id} /> : <SpotTile id={id} />}</>
+  return <>{tileView === TileView.Analytics ? <AnalyticsTile id={id} /> : <SpotTile id={id} />}</>
 }
