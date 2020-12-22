@@ -7,10 +7,12 @@ import {
   AppUrl,
   ServiceListPopup,
   ServiceList,
+  Header,
 } from "./styled"
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
 import { usePopUpMenu } from "utils/usePopUpMenu"
+import { useServiceStatus } from "./serviceStatus"
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -31,7 +33,7 @@ const gitTagExists = async (gitTag: string | undefined) => {
   return exists
 }
 
-const FooterVersion: React.FC = () => {
+export const FooterVersion: React.FC = () => {
   const [versionExists, setVersionExists] = useState<boolean | void>(false)
 
   const URL =
@@ -56,7 +58,6 @@ const FooterVersion: React.FC = () => {
     </Wrapper>
   )
 }
-export default FooterVersion
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
   if (
@@ -85,7 +86,7 @@ export const StatusButton: React.FC = () => {
   const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const services: ServiceStatus[] = []
+  const services: ServiceStatus[] = useServiceStatus()
 
   const toggleMenu = useCallback(() => {
     setDisplayMenu(!displayMenu)
@@ -103,6 +104,7 @@ export const StatusButton: React.FC = () => {
       </Button>
 
       <ServiceListPopup open={displayMenu}>
+        <Header>Connections</Header>
         <ServiceList>
           <AppUrl
             title={appUrl}
