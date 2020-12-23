@@ -1,4 +1,6 @@
-import { useCallback, SyntheticEvent, useRef, useState, useEffect } from "react"
+import { SyntheticEvent, useRef, useState, useEffect } from "react"
+import { bind } from "@react-rxjs/core"
+import { map, startWith } from "rxjs/operators"
 import styled from "styled-components/macro"
 import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
 import {
@@ -12,7 +14,8 @@ import {
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
 import { usePopUpMenu } from "utils/usePopUpMenu"
-import { useServiceStatus } from "./serviceStatus"
+//import { useServiceStatus } from "./serviceStatus"
+import { status$, ServiceInstanceStatus } from "services/status"
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -82,21 +85,64 @@ const selectAll = (event: SyntheticEvent) => {
   input.select()
 }
 
+const getInstanceNumber = (
+  record: Record<string, ServiceInstanceStatus>,
+  type: string,
+) => {
+  let result: ServiceInstanceStatus[] = []
+  for (let k in record) {
+    if (record[k as keyof typeof record].serviceType === type) {
+      result.push(record[k])
+    }
+  }
+  return result.filter((x) => x.isConnected).length
+}
+
+const initialServiceStatus: ServiceStatus[] = []
+export const [useServiceStatus, serviceStatus$] = bind(
+  status$.pipe(
+    map((record) => {
+      let result: Set<ServiceStatus> = new Set()
+      const recordValues = Object.values(record)
+      recordValues.forEach((next) => {
+        const newStatus = {
+          serviceType: next.serviceType,
+          connectedInstanceCount: getInstanceNumber(record, next.serviceType),
+          connectionStatus: getInstanceNumber(record, next.serviceType)
+            ? ServiceConnectionStatus.CONNECTED
+            : ServiceConnectionStatus.DISCONNECTED,
+        }
+        result.add(newStatus)
+      })
+      return Array.from(result)
+    }),
+    startWith(initialServiceStatus),
+  ),
+)
+
+export const [useApplicationStatus, applicationStatus$] = bind(
+  serviceStatus$.pipe(
+    map((status) => getApplicationStatus(status)),
+    startWith(ServiceConnectionStatus.CONNECTING),
+  ),
+)
+
 export const StatusButton: React.FC = () => {
   const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const services: ServiceStatus[] = useServiceStatus()
 
-  const toggleMenu = useCallback(() => {
-    setDisplayMenu(!displayMenu)
-  }, [displayMenu, setDisplayMenu])
-
   const appUrl = url
-  const appStatus = getApplicationStatus(services)
+  const appStatus = useApplicationStatus()
   return (
     <Root ref={ref}>
-      <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
+      <Button
+        onClick={() => {
+          setDisplayMenu((prev) => !prev)
+        }}
+        data-qa="status-button__toggle-button"
+      >
         <StatusCircle status={appStatus} />
         <StatusLabel>
           {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
