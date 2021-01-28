@@ -13,9 +13,10 @@ import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
 import { Trade } from "services/trades"
 
-const TableHeadCell = styled.th<{ numeric: boolean }>`
+const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
+  width: ${({ width }) => `${width} px`};
   font-weight: unset;
   top: 0;
   position: sticky;
@@ -38,6 +39,10 @@ const TableHeadCell = styled.th<{ numeric: boolean }>`
     display: inline-block;
   }
 `
+const AlignedFilterIcon = styled(FaFilter)`
+  margin-left: 0.2rem;
+  margin-right: 0.1rem;
+`
 
 export const TableHeadCellContainer: React.FC<
   ColConfig & {
@@ -58,14 +63,14 @@ export const TableHeadCellContainer: React.FC<
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const numeric =
-    colConfigs[field].filterType === "number" && field !== "tradeId"
+  const numeric = filterType === "number" && field !== "tradeId"
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
-      onMouseEnter={() => filterType === "set" && setShowFilter(true)}
+      onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
       numeric={numeric}
+      width={colConfigs[field].width}
     >
       {displayMenu && (
         <SetFilter
@@ -81,7 +86,7 @@ export const TableHeadCellContainer: React.FC<
       )}
       {numeric &&
         (showFilter ? (
-          <FaFilter
+          <AlignedFilterIcon
             onClick={(e) => {
               e.stopPropagation()
               setDisplayMenu((current) => !current)
@@ -107,7 +112,7 @@ export const TableHeadCellContainer: React.FC<
       ) : null}
       {!numeric &&
         (showFilter ? (
-          <FaFilter
+          <AlignedFilterIcon
             onClick={(e) => {
               e.stopPropagation()
               setDisplayMenu((current) => !current)
