@@ -6,6 +6,7 @@ import {
   ColConfig,
   DistinctValues,
   ColField,
+  colConfigs,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { useRef, useState } from "react"
@@ -56,6 +57,7 @@ export const TableHeadCellContainer: React.FC<
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
+  const numeric = colConfigs[field].filterType === "number"
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
