@@ -13,8 +13,9 @@ import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
 import { Trade } from "services/trades"
 
-const TableHeadCell = styled.th`
-  text-align: left;
+const TableHeadCell = styled.th<{ numeric: boolean }>`
+  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
+  ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
   font-weight: unset;
   top: 0;
   position: sticky;
@@ -57,12 +58,14 @@ export const TableHeadCellContainer: React.FC<
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const numeric = colConfigs[field].filterType === "number"
+  const numeric =
+    colConfigs[field].filterType === "number" && field !== "tradeId"
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
       onMouseEnter={() => filterType === "set" && setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
+      numeric={numeric}
     >
       {displayMenu && (
         <SetFilter
@@ -76,26 +79,43 @@ export const TableHeadCellContainer: React.FC<
           }
         />
       )}
-      {headerName}
-      {tableSort.field === field ? (
+      {numeric &&
+        (showFilter ? (
+          <FaFilter
+            onClick={(e) => {
+              e.stopPropagation()
+              setDisplayMenu((current) => !current)
+            }}
+          />
+        ) : (
+          <span className="spacer" />
+        ))}
+      {tableSort.field === field && numeric ? (
         tableSort.direction === "ASC" ? (
           <FaLongArrowAltUp />
         ) : (
           <FaLongArrowAltDown />
         )
-      ) : (
-        <span className="spacer" />
-      )}
-      {showFilter ? (
-        <FaFilter
-          onClick={(e) => {
-            e.stopPropagation()
-            setDisplayMenu((current) => !current)
-          }}
-        />
-      ) : (
-        <span className="spacer" />
-      )}
+      ) : null}
+      {headerName}
+      {tableSort.field === field && !numeric ? (
+        tableSort.direction === "ASC" ? (
+          <FaLongArrowAltUp />
+        ) : (
+          <FaLongArrowAltDown />
+        )
+      ) : null}
+      {!numeric &&
+        (showFilter ? (
+          <FaFilter
+            onClick={(e) => {
+              e.stopPropagation()
+              setDisplayMenu((current) => !current)
+            }}
+          />
+        ) : (
+          <span className="spacer" />
+        ))}
     </TableHeadCell>
   )
 }
