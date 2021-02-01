@@ -10,7 +10,7 @@ import {
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { NumFilter } from "./NumFilter"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { usePopUpMenu } from "utils"
 import { Trade } from "services/trades"
 import { useNumberFilters } from "../TradesState/filterState"
@@ -74,6 +74,20 @@ export const TableHeadCellContainer: React.FC<
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const numeric = filterType === "number" && field !== "tradeId"
   const numFilters = useNumberFilters()
+  const [comparator, setComparator] = useState("Equals")
+  const value1 = useRef<string | null>(null)
+  const value2 = useRef<string | null>(null)
+
+  useEffect(() => {
+    const selected = numFilters[field as keyof Trade]
+    if (selected.value1) {
+      value1.current = selected.value1.toString()
+    }
+    if (selected.value2) {
+      value2.current = selected.value2.toString()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
@@ -87,7 +101,10 @@ export const TableHeadCellContainer: React.FC<
         (numeric ? (
           <NumFilter
             field={field}
-            selected={numFilters[field as keyof Trade]}
+            comparator={comparator}
+            setComparator={setComparator}
+            value1={value1}
+            value2={value2}
           />
         ) : (
           <SetFilter

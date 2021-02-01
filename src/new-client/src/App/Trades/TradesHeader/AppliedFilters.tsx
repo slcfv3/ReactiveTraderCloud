@@ -5,6 +5,9 @@ import {
   ColField,
   onColFilterSelect,
   useAppliedFilterEntries,
+  useNumFilterEntries,
+  onColFilterEnterNum,
+  ComparatorType,
 } from "../TradesState"
 
 const FilterButton = styled("button")`
@@ -36,16 +39,27 @@ const FilterName = styled("div")`
 `
 
 export const AppliedFilters: React.FC = () => {
-  const filteredFields = useAppliedFilterEntries().map(
+  const numFilters = useNumFilterEntries()
+  const setFilters = useAppliedFilterEntries()
+  const filteredFields = [...numFilters, ...setFilters].map(
     ([field]) => field,
   ) as ColField[]
+  const onClick = (field: ColField) => {
+    if (colConfigs[field].filterType === "number") {
+      const filterDetails = {
+        comparator: "Equals" as ComparatorType,
+        value1: null,
+      }
+      onColFilterEnterNum([field, filterDetails])
+    } else onColFilterSelect([field, new Set()])
+  }
   return (
     <>
       {filteredFields.map((field) => (
         <FilterField key={field}>
           <FilterName>{colConfigs[field].headerName}</FilterName>
           <FilterButton>
-            <FaTimes onClick={() => onColFilterSelect([field, new Set()])} />
+            <FaTimes onClick={() => onClick(field)} />
           </FilterButton>
         </FilterField>
       ))}

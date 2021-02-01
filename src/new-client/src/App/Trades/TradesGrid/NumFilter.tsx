@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useRef } from "react"
 import { usePopUpMenu } from "utils/usePopUpMenu"
 import styled from "styled-components/macro"
 import {
@@ -6,7 +6,6 @@ import {
   comparatorConfigs,
   ComparatorType,
   onColFilterEnterNum,
-  NumFilterContent,
 } from "../TradesState"
 
 export const MultiSelectWrapper = styled.span`
@@ -33,7 +32,7 @@ export const MultiSelectMenu = styled.div`
   max-height: 8rem;
   overflow-y: auto;
   top: 0px;
-  right: 0px;
+  right: 30px;
   background-color: ${({ theme }) => theme.primary.base};
   padding: 6px;
   box-shadow: ${({ theme }) => theme.core.textColor} 0px 0px 0.3125rem 0px;
@@ -62,6 +61,7 @@ export const MultiSelectOption = styled.div<{
 export const DropdownWrapper = styled.div`
   display: block;
   position: relative;
+  width: 10rem;
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 4px;
   color: ${({ theme }) => theme.core.textColor};
@@ -70,6 +70,8 @@ export const DropdownWrapper = styled.div`
   padding: 8px 15px 5px 15px;
   cursor: pointer;
   transition: all 200ms ease;
+  text-transform: none;
+  text-align: left;
 
   .dd-placeholder {
     padding-right: 20px;
@@ -116,7 +118,7 @@ const Input = styled.input`
   outline: none;
   border: none;
   font-size: 0.75rem;
-  width: 80px;
+  width: 100%;
   padding: 2px 0;
   color: ${({ theme }) => theme.core.textColor};
   border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
@@ -127,26 +129,24 @@ const Input = styled.input`
   }
 `
 
-interface SetFilterProps {
+interface NumFilterProps {
   field: ColField
-  selected: NumFilterContent
+  comparator: string
+  setComparator: React.Dispatch<React.SetStateAction<string>>
+  value1: React.MutableRefObject<string | null>
+  value2: React.MutableRefObject<string | null>
 }
 
-export const NumFilter: React.FC<SetFilterProps> = ({ field, selected }) => {
+export const NumFilter: React.FC<NumFilterProps> = ({
+  field,
+  comparator,
+  setComparator,
+  value1,
+  value2,
+}) => {
   const innerRef = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(innerRef)
-  const [comparator, setComparator] = useState("Equals")
-  const value1 = useRef<string | null>(null)
-  const value2 = useRef<string | null>(null)
-  useEffect(() => {
-    if (selected.value1) {
-      value1.current = selected.value1.toString()
-    }
-    if (selected.value2) {
-      value2.current = selected.value2.toString()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+
   const toggle = () => setDisplayMenu(!displayMenu)
   const changeValue1 = (value: string) => {
     value1.current = value
@@ -156,7 +156,6 @@ export const NumFilter: React.FC<SetFilterProps> = ({ field, selected }) => {
     }
     if (comparator !== "InRange") {
       onColFilterEnterNum([field, filterDetails])
-      console.log("filter sent", parseInt(value1.current as string))
     }
   }
 
@@ -173,7 +172,7 @@ export const NumFilter: React.FC<SetFilterProps> = ({ field, selected }) => {
     <MultiSelectWrapper ref={innerRef}>
       <MultiSelectMenu>
         <DropdownWrapper onClick={toggle}>
-          <div className="dd-placeholder">{comparator}</div>
+          <div>{comparatorConfigs[comparator as ComparatorType]}</div>
 
           {displayMenu && (
             <DropdownMenu>

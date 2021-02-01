@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { map, scan, startWith, tap } from "rxjs/operators"
+import { map, scan, startWith } from "rxjs/operators"
 import { mapObject } from "utils"
 import { Trade, trades$ } from "services/trades"
 import { ColField, colFields } from "./colConfig"
@@ -81,7 +81,6 @@ export const [colFilterNum$, onColFilterEnterNum] = createListener<
 
 export const [useNumberFilters, numberFilters$] = bind(
   colFilterNum$.pipe(
-    tap((value) => console.log("filter received", value)),
     scan((numberFilters, [field, filterSet]) => {
       return {
         ...numberFilters,

@@ -16,6 +16,7 @@ export {
   comparatorConfigs,
   onColFilterEnterNum,
   useNumberFilters,
+  useNumFilterEntries,
 } from "./filterState"
 export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"
 export { tableTrades$, useTableTrades } from "./tableTrades"

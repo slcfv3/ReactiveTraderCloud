@@ -27,7 +27,7 @@ export const MultiSelectMenu = styled.div`
   max-height: 8rem;
   overflow-y: auto;
   top: 0px;
-  right: 0px;
+  right: 10px;
   background-color: ${({ theme }) => theme.primary.base};
   padding: 6px;
   box-shadow: ${({ theme }) => theme.core.textColor} 0px 0px 0.3125rem 0px;
