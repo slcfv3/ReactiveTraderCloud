@@ -9,9 +9,12 @@ import {
   colConfigs,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
+import { NumFilter } from "./NumFilter"
 import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
 import { Trade } from "services/trades"
+import { useNumberFilters } from "../TradesState/filterState"
+import Popup from "components/Popup"
 
 const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
@@ -44,6 +47,12 @@ const AlignedFilterIcon = styled(FaFilter)`
   margin-right: 0.1rem;
 `
 
+export const ContactUsPopup = styled(Popup)`
+  box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
+  bottom: calc(2rem + 0.25rem);
+  border-radius: 0.5rem;
+`
+
 export const TableHeadCellContainer: React.FC<
   ColConfig & {
     field: ColField
@@ -61,9 +70,10 @@ export const TableHeadCellContainer: React.FC<
   appliedFilters,
 }) => {
   const [showFilter, setShowFilter] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLTableHeaderCellElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const numeric = filterType === "number" && field !== "tradeId"
+  const numFilters = useNumberFilters()
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
@@ -71,24 +81,30 @@ export const TableHeadCellContainer: React.FC<
       onMouseLeave={() => setShowFilter(false)}
       numeric={numeric}
       width={colConfigs[field].width}
+      ref={ref}
     >
-      {displayMenu && (
-        <SetFilter
-          field={field}
-          selected={appliedFilters[field as keyof Trade]}
-          ref={ref}
-          options={
-            [...filterOptions[field as keyof Trade]].map((value) =>
-              valueFormatter === undefined ? value : valueFormatter(value),
-            ) as string[]
-          }
-        />
-      )}
+      {displayMenu &&
+        (numeric ? (
+          <NumFilter
+            field={field}
+            selected={numFilters[field as keyof Trade]}
+          />
+        ) : (
+          <SetFilter
+            field={field}
+            selected={appliedFilters[field as keyof Trade]}
+            options={
+              [...filterOptions[field as keyof Trade]].map((value) =>
+                valueFormatter === undefined ? value : valueFormatter(value),
+              ) as string[]
+            }
+          />
+        ))}
       {numeric &&
         (showFilter ? (
           <AlignedFilterIcon
             onClick={(e) => {
-              e.stopPropagation()
+              //e.stopPropagation()
               setDisplayMenu((current) => !current)
             }}
           />

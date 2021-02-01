@@ -1,6 +1,10 @@
 export type { ColField, ColConfig } from "./colConfig"
 export { colConfigs, colFields } from "./colConfig"
-export type { DistinctValues } from "./filterState"
+export type {
+  DistinctValues,
+  ComparatorType,
+  NumFilterContent,
+} from "./filterState"
 export {
   useDistinctFieldValues,
   onQuickFilterInput,
@@ -9,6 +13,9 @@ export {
   useAppliedFilters,
   appliedFilters$,
   distinctFieldValues$,
+  comparatorConfigs,
+  onColFilterEnterNum,
+  useNumberFilters,
 } from "./filterState"
 export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"
 export { tableTrades$, useTableTrades } from "./tableTrades"

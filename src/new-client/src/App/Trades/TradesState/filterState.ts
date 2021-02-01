@@ -1,9 +1,48 @@
 import { bind } from "@react-rxjs/core"
-import { map, scan, startWith } from "rxjs/operators"
+import { map, scan, startWith, tap } from "rxjs/operators"
 import { mapObject } from "utils"
 import { Trade, trades$ } from "services/trades"
 import { ColField, colFields } from "./colConfig"
 import { createListener } from "@react-rxjs/utils"
+
+export type ComparatorType =
+  | "Equals"
+  | "NotEqual"
+  | "Less"
+  | "LessOrEqual"
+  | "Greater"
+  | "GreaterOrEqual"
+  | "InRange"
+
+export const comparatorConfigs: Record<ComparatorType, string> = {
+  Equals: "Equals",
+  NotEqual: "Not equal",
+  Less: "Less than",
+  LessOrEqual: "Less than or equals",
+  Greater: "Greater than",
+  GreaterOrEqual: "Greater than or equals",
+  InRange: "In range",
+}
+
+export interface NumFilterContent {
+  comparator: ComparatorType
+  value1: number | null
+  value2?: number | null
+}
+
+export type DistinctNums = {
+  [K in ColField]: NumFilterContent
+}
+
+export const fieldNumContainer = colFields.reduce((valuesContainer, field) => {
+  return {
+    ...valuesContainer,
+    [field]: {
+      comparator: "Equals",
+      value1: null,
+    },
+  }
+}, {} as DistinctNums)
 
 export type DistinctValues = {
   [K in ColField]: Set<Trade[K]>
@@ -34,6 +73,34 @@ export const [useDistinctFieldValues, distinctFieldValues$] = bind(
       }, ClonedFieldValuesContainer()),
     ),
   ),
+)
+
+export const [colFilterNum$, onColFilterEnterNum] = createListener<
+  [ColField, NumFilterContent]
+>()
+
+export const [useNumberFilters, numberFilters$] = bind(
+  colFilterNum$.pipe(
+    tap((value) => console.log("filter received", value)),
+    scan((numberFilters, [field, filterSet]) => {
+      return {
+        ...numberFilters,
+        [field]: filterSet,
+      }
+    }, fieldNumContainer),
+    startWith(fieldNumContainer),
+  ),
+)
+
+export const [useNumFilterEntries, numFilterEntries$] = bind(
+  numberFilters$.pipe(
+    map((numberFilters) =>
+      Object.entries(numberFilters).filter(
+        ([_, valueSet]) => valueSet.value1 !== null,
+      ),
+    ),
+  ),
+  [],
 )
 
 export const [colFilterSelections$, onColFilterSelect] = createListener<

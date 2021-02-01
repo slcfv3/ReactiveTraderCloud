@@ -62,18 +62,16 @@ interface SetFilterProps {
   options: unknown[]
   field: ColField
   selected: Set<unknown>
-  ref: React.RefObject<HTMLDivElement>
 }
 
 export const SetFilter: React.FC<SetFilterProps> = ({
   options,
   field,
   selected,
-  ref,
 }) => {
   return (
     <MultiSelectWrapper>
-      <MultiSelectMenu ref={ref}>
+      <MultiSelectMenu>
         {options.map((option) => {
           const isSelected = selected.has(option)
           return (
