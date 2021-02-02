@@ -169,13 +169,13 @@ export const NumFilter: React.FC<NumFilterProps> = ({
     onColFilterEnterNum([field, filterDetails])
   }
   return (
-    <MultiSelectWrapper ref={innerRef}>
+    <MultiSelectWrapper>
       <MultiSelectMenu>
         <DropdownWrapper onClick={toggle}>
           <div>{comparatorConfigs[comparator as ComparatorType]}</div>
 
           {displayMenu && (
-            <DropdownMenu>
+            <DropdownMenu ref={innerRef}>
               {Object.keys(comparatorConfigs).map((comparator) => {
                 return (
                   <DropdownOption

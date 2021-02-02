@@ -121,7 +121,7 @@ export const TableHeadCellContainer: React.FC<
         (showFilter ? (
           <AlignedFilterIcon
             onClick={(e) => {
-              //e.stopPropagation()
+              e.stopPropagation()
               setDisplayMenu((current) => !current)
             }}
           />
