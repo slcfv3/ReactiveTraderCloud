@@ -51,6 +51,9 @@ const mockModule = () => {
     ) => {
       registeredStreams.push([["rpc", service, operationName, payload], stream])
     },
+    whenGetPrice: (symbol: string, stream: Observable<any>) => {
+      registeredStreams.push([[symbol], stream])
+    },
     watch$: toJestMock((...args: any[]) =>
       defer(() => getMatch("watch", args)),
     ),
@@ -80,4 +83,5 @@ export const {
   whenRpc,
   whenWatch,
   reset,
+  whenGetPrice,
 } = mock
