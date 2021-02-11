@@ -12,15 +12,14 @@ import {
   getHistoricalPrices$,
   useHistoricalPrices,
   PriceMovementType,
-  getTest$,
-  useTest,
-  Price,
 } from "./prices"
 import { testScheduler } from "utils/testScheduler"
-import { BehaviorSubject, of, Subject } from "rxjs"
+import { BehaviorSubject, NEVER, of, Subject } from "rxjs"
 import { render, screen, act as reactAct } from "@testing-library/react"
 import { act, renderHook } from "@testing-library/react-hooks"
 import { Subscribe } from "@react-rxjs/core"
+
+const wait = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
 const mockSource = {
   a: {
@@ -304,32 +303,56 @@ describe("services/prices", () => {
       expect(result.current).toEqual(mockResult.c)
     })
   })
-  describe("getHistoricalPrices$", () => {
+  describe("useHistoricalPrices", () => {
     beforeEach(() => {
       reset()
     })
 
-    it("returns historical prices at beginning", () => {
-      const executeStream$ = getHistoricalPrices$(sampleSymbol)
-      testScheduler().run(({ expectObservable, cold }) => {
-        const input = cold("    ---b", mockHistorySource)
-        const expectedOutput = "---c"
+    it("returns historical prices at beginning", async () => {
+      const mockHistory$ = new BehaviorSubject(mockHistorySource.a)
+      const priceUpdates$ = new Subject<any>()
+      whenRpc("priceHistory", "getPriceHistory", sampleSymbol, mockHistory$)
+      whenStream(
+        "pricing",
+        "getPriceUpdates",
+        { symbol: sampleSymbol },
+        priceUpdates$,
+      )
 
-        whenRpc("priceHistory", "getPriceHistory", sampleSymbol, input)
-        expectObservable(executeStream$).toBe(expectedOutput, mockHistoryResult)
+      const { result } = renderUseHistoricalPrices(sampleSymbol)
+
+      await reactAct(async () => {
+        await wait(10)
       })
+
+      expect(result.current).toEqual(mockHistoryResult.a)
     })
 
-    it("returns new price concat historical price after new price comes", () => {
-      const executeStream$ = getHistoricalPrices$(sampleSymbol)
-      testScheduler().run(({ expectObservable, cold }) => {
-        const input = cold("     ---a", mockHistorySource)
-        const expectedOutput = " ---a"
+    it("returns new price concat historical price after new price comes", async () => {
+      const mockHistory$ = new BehaviorSubject(mockHistorySource.a)
+      const priceUpdates$ = new Subject<any>()
+      whenRpc("priceHistory", "getPriceHistory", sampleSymbol, mockHistory$)
+      whenStream(
+        "pricing",
+        "getPriceUpdates",
+        { symbol: sampleSymbol },
+        priceUpdates$,
+      )
 
-        whenRpc("priceHistory", "getPriceHistory", sampleSymbol, input)
-        //whenGetPrice(sampleSymbol, priceInput)
-        expectObservable(executeStream$).toBe(expectedOutput, mockHistoryResult)
+      const { result } = renderUseHistoricalPrices(sampleSymbol)
+
+      await reactAct(async () => {
+        await wait(10)
       })
+
+      expect(result.current).toEqual(mockHistoryResult.a)
+
+      await reactAct(async () => {
+        mockHistory$.complete()
+        priceUpdates$.next(mockSource.a)
+        await wait(10)
+      })
+      expect(result.current).toEqual(mockHistoryResult.b)
     })
   })
 })
