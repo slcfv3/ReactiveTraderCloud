@@ -71,3 +71,18 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
     debounceTime(0),
   ),
 )
+
+export const [useTest, getTest$] = bind<[string], HistoryPrice[]>(
+  (symbol: string) =>
+    getRemoteProcedureCall$<HistoryPrice[], string>(
+      "priceHistory",
+      "getPriceHistory",
+      symbol,
+    ).pipe(
+      mergeAll(),
+      scan((acc, price) => {
+        const result = acc.concat(price)
+        return result.length <= HISTORY_SIZE ? result : result.slice(1)
+      }, [] as HistoryPrice[]),
+    ),
+)
