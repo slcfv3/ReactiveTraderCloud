@@ -44,7 +44,7 @@ export const HistoricalGraph: React.FC = () => {
   const d = useHistoricalPath()
 
   return (
-    <LineChartWrapper>
+    <LineChartWrapper role={"tileChart"}>
       <AnalyticsTileChartWrapper>
         <Svg viewBox={`0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`}>
           <Path

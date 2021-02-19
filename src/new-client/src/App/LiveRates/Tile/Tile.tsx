@@ -36,7 +36,7 @@ export const Tile: React.FC<{
 }> = memo(({ currencyPair, isAnalytics }) => {
   return (
     <Provider value={currencyPair}>
-      <PanelItem>
+      <PanelItem role={"tile"}>
         <Main>
           <Header />
           <Body isAnalyticsView={isAnalytics}>
