@@ -1,6 +1,6 @@
-import { bind } from "@react-rxjs/core"
-import { defer, Observable, of } from "rxjs"
-import { CurrencyPair } from "../types"
+import {bind} from "@react-rxjs/core"
+import {defer, Observable, of} from "rxjs"
+import {CurrencyPair} from "../types"
 
 let ccMocks$: Record<string, Observable<CurrencyPair>> = {}
 let currenciesMocks$: Observable<String[]> = of([])
@@ -30,7 +30,9 @@ export const __resetCurrenciesMocks = () => {
   currenciesMocks$ = of([])
 }
 
-export const [useCurrencies, currencies$] = bind(defer(() => currenciesMocks$))
+export const [useCurrencies, currencies$] = bind(defer(() => {
+  return currenciesMocks$
+}))
 
 export const __setCurrencyPairsMock = (key: string, value: CurrencyPair) => {
   currencyPairsMocks$[key] = value

@@ -1,13 +1,14 @@
-import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act, fireEvent } from "@testing-library/react"
-import { BehaviorSubject } from "rxjs"
-import { Tiles } from "../Tiles"
-import { MainHeader } from "./MainHeader"
-import { liveRates$ } from "../LiveRates"
-import { CurrencyPair } from "services/currencyPairs"
-import { TestThemeProvider } from "utils/testUtils"
+import {Subscribe} from "@react-rxjs/core"
+import {render, screen, act, fireEvent} from "@testing-library/react"
+import {BehaviorSubject} from "rxjs"
+import {MainHeader} from "./MainHeader"
+import {liveRates$} from "../LiveRates"
+import {CurrencyPair} from "services/currencyPairs"
+import {TestThemeProvider} from "utils/testUtils"
+import {Tiles} from "../Tiles"
 
 jest.mock("services/currencyPairs/currencyPairs")
+jest.mock("../Tile/Tile.tsx")
 
 const currenciesMock: string[] = ["EUR", "USD"]
 
@@ -20,7 +21,7 @@ const currencyPairMock1: CurrencyPair = {
 }
 
 const currencyPairMock2: CurrencyPair = {
-  symbol: "GBP/JPY",
+  symbol: "GBPJPY",
   base: "GBP",
   terms: "JPY",
   ratePrecision: 5,
@@ -39,7 +40,7 @@ const renderComponent = () =>
 
 const _ccpp = require("services/currencyPairs/currencyPairs")
 
-describe("Tile", () => {
+describe("MainHeader", () => {
   beforeEach(() => {
     _ccpp.__resetMocks()
   })
@@ -55,22 +56,23 @@ describe("Tile", () => {
     expect(screen.getAllByRole("menuButton")[2].textContent).toBe(`USD`)
   })
 
-  xit("should filter the tiles based on selection", async () => {
+  it("should filter the tiles based on selection", async () => {
     const currenciesMock$ = new BehaviorSubject<string[]>(currenciesMock)
     _ccpp.__setCurrenciesMock(currenciesMock$)
 
-    _ccpp.__setCurrencyPairMock(currencyPairMock1.symbol, currencyPairMock1)
-    _ccpp.__setCurrencyPairMock(currencyPairMock2.symbol, currencyPairMock2)
+    _ccpp.__setCurrencyPairsMock(currencyPairMock1.symbol, currencyPairMock1)
+    _ccpp.__setCurrencyPairsMock(currencyPairMock2.symbol, currencyPairMock2)
 
     renderComponent()
 
-    expect(screen.getAllByRole("tile").length).toBe(2)
+    expect(screen.getByTestId("workspace__tiles-workspace-items").children.length).toBe(2)
+
     act(() => {
       fireEvent.click(screen.getAllByRole("menuButton")[1])
     })
 
-    expect(screen.getAllByRole("tile").length).toBe(1)
-    expect(screen.getAllByRole("tile")[0].textContent).toBe(`EUR`)
+    expect(screen.getByTestId("workspace__tiles-workspace-items").children.length).toBe(1)
+    expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
   })
 
   xit("should show the charts in tiles once click toggle view button", async () => {

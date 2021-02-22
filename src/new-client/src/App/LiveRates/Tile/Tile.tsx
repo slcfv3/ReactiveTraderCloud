@@ -1,11 +1,11 @@
-import React, { memo } from "react"
-import { merge } from "rxjs"
-import { Direction } from "services/trades"
-import { PriceMovement, priceMovement$ } from "./PriceMovement"
-import { NotionalInput } from "./Notional"
-import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
-import { PriceButton, priceButton$ } from "./PriceButton"
-import { Header, header$ } from "./Header"
+import React, {memo} from "react"
+import {merge} from "rxjs"
+import {Direction} from "services/trades"
+import {PriceMovement, priceMovement$} from "./PriceMovement"
+import {NotionalInput} from "./Notional"
+import {HistoricalGraph, historicalGraph$} from "./HistoricalGraph"
+import {PriceButton, priceButton$} from "./PriceButton"
+import {Header, header$} from "./Header"
 import {
   PriceControlsStyle,
   PanelItem,
@@ -13,10 +13,10 @@ import {
   PriceControlWrapper,
   Body,
 } from "./Tile.styles"
-import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
+import {ExecutionResponse, executionResponse$} from "./ExecutionResponse"
 
-import { CurrencyPair } from "services/currencyPairs"
-import { Provider } from "./Tile.context"
+import {CurrencyPair} from "services/currencyPairs"
+import {Provider} from "./Tile.context"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -33,7 +33,7 @@ export const tile$ = (symbol: string) =>
 export const Tile: React.FC<{
   currencyPair: CurrencyPair
   isAnalytics: boolean
-}> = memo(({ currencyPair, isAnalytics }) => {
+}> = memo(({currencyPair, isAnalytics}) => {
   return (
     <Provider value={currencyPair}>
       <PanelItem role={"tile"}>

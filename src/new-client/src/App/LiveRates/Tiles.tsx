@@ -1,8 +1,8 @@
-import { combineLatest, concat, EMPTY, merge } from "rxjs"
+import {combineLatest, concat, EMPTY, merge} from "rxjs"
 import styled from "styled-components/macro"
-import { currencyPairs$, currencyPairUpdates$ } from "services/currencyPairs"
-import { TileView, useSelectedTileView } from "./selectedView"
-import { Tile, tile$ } from "./Tile"
+import {currencyPairs$, currencyPairUpdates$} from "services/currencyPairs"
+import {TileView, useSelectedTileView} from "./selectedView"
+import {Tile, tile$} from "./Tile"
 import {
   distinctUntilChanged,
   map,
@@ -11,10 +11,10 @@ import {
   switchMap,
   take,
 } from "rxjs/operators"
-import { UpdateType } from "services/utils"
-import { split } from "@react-rxjs/utils"
-import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
-import { bind } from "@react-rxjs/core"
+import {UpdateType} from "services/utils"
+import {split} from "@react-rxjs/utils"
+import {selectedCurrency$, ALL_CURRENCIES} from "./selectedCurrency"
+import {bind} from "@react-rxjs/core"
 
 const PanelItems = styled.div`
   display: grid;
@@ -27,7 +27,7 @@ const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
     map(([currencyPairs, selectedCurrency]) => {
       if (selectedCurrency === ALL_CURRENCIES)
         return Object.values(currencyPairs)
-      const result = { ...currencyPairs }
+      const result = {...currencyPairs}
       Object.keys(currencyPairs)
         .filter((symbol) => !symbol.includes(selectedCurrency as string))
         .forEach((symbol) => {
@@ -44,7 +44,7 @@ export const tiles$ = merge(
     currencyPairs$.pipe(
       take(1),
       mergeMap((ccPairs) => Object.values(ccPairs)),
-      map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
+      map((currencyPair) => ({currencyPair, updateType: UpdateType.Added})),
     ),
     currencyPairUpdates$,
   ).pipe(
@@ -66,7 +66,7 @@ export const Tiles = () => {
   const currencyPairs = useFilteredCurrencyPairs()
   const selectedView = useSelectedTileView()
   return (
-    <PanelItems data-qa="workspace__tiles-workspace-items">
+    <PanelItems data-testid="workspace__tiles-workspace-items">
       {currencyPairs.map((currencyPair) => (
         <Tile
           key={currencyPair.symbol}
